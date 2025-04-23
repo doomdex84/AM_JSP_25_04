@@ -16,10 +16,18 @@ public class PrintDanServlet extends HttpServlet {
 	
 		response.setContentType("text/html;charset:UTF-8");
 		
-		
 		String inputedDan = request.getParameter("dan");
 		String inputedLimit = request.getParameter("limit");
 		String inputedColor = request.getParameter("color");
+		
+
+		if (inputedDan == null) {
+			inputedDan = "1";
+		}
+
+		if (inputedLimit == null) {
+			inputedLimit = "1";
+		}
 		
 		System.out.println(inputedDan);
 		System.out.println(inputedLimit);
