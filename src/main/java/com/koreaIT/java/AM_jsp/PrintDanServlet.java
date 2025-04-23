@@ -18,14 +18,19 @@ public class PrintDanServlet extends HttpServlet {
 		
 		
 		String inputedDan = request.getParameter("dan");
+		String inputedLimit = request.getParameter("limit");
 		
 		System.out.println(inputedDan);
+		System.out.println(inputedLimit);
+		
 		
 		int dan = Integer.parseInt(inputedDan);
+		int limit = Integer.parseInt(inputedLimit);
+		
 		
 		response.getWriter().append(String.format("==%d단==<br>",dan));
 		
-		for (int i=1; i<=9; i++) {
+		for (int i=1; i<=limit; i++) {
 			response.getWriter().append(String.format("%d * %d = %d <br>",dan,i,dan*i));
 		}
 		
