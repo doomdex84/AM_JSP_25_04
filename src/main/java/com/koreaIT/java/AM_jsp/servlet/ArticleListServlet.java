@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.koreaIT.java.AM_jsp.util.DBUtil;
+import com.koreaIT.java.AM_jsp.util.SecSql;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -31,9 +32,7 @@ public class ArticleListServlet extends HttpServlet {
 
 		}
 
-		response.getWriter().append("123");
-
-		String url = "jdbc:mysql://127.0.0.1:3306/ AM_JSP_25_04?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
+		String url = "jdbc:mysql://127.0.0.1:3306/AM_JSP_25_04?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul";
 		String user = "root";
 		String password = "";
 
@@ -43,11 +42,13 @@ public class ArticleListServlet extends HttpServlet {
 			conn = DriverManager.getConnection(url, user, password);
 			response.getWriter().append("연결 성공!");
 
-			DBUtil dbUtil = new DBUtil(request, response);
+//			String sql = "SELECT * FROM article ORDER BY id DESC;";
 
-			String sql = "SELECT * FROM article ORDER BY id DESC;";
+			SecSql sql = SecSql.from("SELECT *");
+			sql.append("FROM article");
+			sql.append("ORDER BY id DESC;");
 
-			List<Map<String, Object>> articleRows = dbUtil.selectRows(conn, sql);
+			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 
 			request.setAttribute("articleRows", articleRows);
 
