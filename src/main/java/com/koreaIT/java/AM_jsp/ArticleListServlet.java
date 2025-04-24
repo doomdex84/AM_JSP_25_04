@@ -1,6 +1,5 @@
 package com.koreaIT.java.AM_jsp;
 
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -47,8 +46,12 @@ public class ArticleListServlet extends HttpServlet {
 			String sql = "SELECT * FROM article;";
 
 			List<Map<String, Object>> articleRows = dbUtil.selectRows(conn, sql);
-			
-			response.getWriter().append(articleRows.toString());
+
+			request.setAttribute("articleRows", articleRows);
+
+//			response.getWriter().append(articleRows.toString());
+
+			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);
