@@ -13,6 +13,8 @@ Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("art
 <title>게시글 상세페이지</title>
 </head>
 <body>
+	<a href="../home/main">메인으로 이동</a>
+
 	<h2>게시글 상세페이지</h2>
 
 	<div>
@@ -28,6 +30,8 @@ Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("art
 		내용 :
 		<%=articleRow.get("body")%></div>
 
-	<div><a style="color:green;" href="list">리스트로 돌아가기</a></div>
+	<div>
+		<a style="color: green;" href="list">리스트로 돌아가기</a>
+	</div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.koreaIT.java.AM_jsp;
+package com.koreaIT.java.AM_jsp.util;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

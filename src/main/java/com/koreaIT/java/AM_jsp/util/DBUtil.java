@@ -1,4 +1,4 @@
-package com.koreaIT.java.AM_jsp;
+package com.koreaIT.java.AM_jsp.util;
 
 
 import java.sql.Connection;
@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.koreaIT.java.AM_jsp.exception.SQLErrorException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
