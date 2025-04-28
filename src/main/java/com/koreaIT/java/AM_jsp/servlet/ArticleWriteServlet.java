@@ -1,10 +1,9 @@
 package com.koreaIT.java.AM_jsp.servlet;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
 
 import com.koreaIT.java.AM_jsp.util.DBUtil;
 import com.koreaIT.java.AM_jsp.util.SecSql;
@@ -15,8 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/list")
-public class ArticleListServlet extends HttpServlet {
+@WebServlet("/article/doWrite")
+public class ArticleWriteServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -39,36 +38,24 @@ public class ArticleListServlet extends HttpServlet {
 
 		try {
 			conn = DriverManager.getConnection(url, user, password);
+			response.getWriter().append("연결 성공!");
 
+			int id = Integer.parseInt(request.getParameter("id"));
 
-			int page = 1;
-
-			if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
-				page = Integer.parseInt(request.getParameter("page"));
-			}
-
-			int itemsInAPage = 10;
-			int limitFrom = (page - 1) * itemsInAPage;
-
-			SecSql sql = SecSql.from("SELECT COUNT(*)");
-			sql.append("FROM article;");
-
-			int totalCnt = DBUtil.selectRowIntValue(conn, sql);
-			int totalPage = (int) Math.ceil(totalCnt / (double)itemsInAPage);
-
-			sql = SecSql.from("SELECT *");
+			SecSql sql = SecSql.from("INSERT INTO article");
 			sql.append("FROM article");
-			sql.append("ORDER BY id DESC");
-			sql.append("LIMIT ?, ?;", limitFrom, itemsInAPage);
-
-			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
+			sql.append("WHERE id = ?;", id);
 			
-			request.setAttribute("page", page);
-			request.setAttribute("articleRows", articleRows);
-			request.setAttribute("totalCnt", totalCnt);
-			request.setAttribute("totalPage", totalPage);
+			SecSql sql = SecSql.from("INSERT");
+		        sql.append("INTO article");
+		        sql.append("title = ?,", title);
+		        sql.append("`body`= ?;", body);
 
-			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
+		        return DBUtil.insert(conn, sql);
+//		}
+
+			response.getWriter()
+					.append(String.format("<script>alert('%d번 글이 저장됨'); location.replace('list');</script>", id));
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);
