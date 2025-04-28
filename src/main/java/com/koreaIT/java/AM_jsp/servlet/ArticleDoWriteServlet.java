@@ -1,5 +1,4 @@
 package com.koreaIT.java.AM_jsp.servlet;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -64,6 +63,10 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			}
 		}
 
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }

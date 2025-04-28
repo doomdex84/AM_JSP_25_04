@@ -40,6 +40,10 @@ public class ArticleModifyServlet extends HttpServlet {
 			conn = DriverManager.getConnection(url, user, password);
 			response.getWriter().append("연결 성공!");
 
+			
+			String title = request.getParameter("title");
+			String body = request.getParameter("body");
+			
 			int id = Integer.parseInt(request.getParameter("id"));
 
 			SecSql sql = SecSql.from("UPDATE article");

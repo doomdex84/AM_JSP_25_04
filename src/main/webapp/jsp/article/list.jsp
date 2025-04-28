@@ -10,7 +10,6 @@ int cPage = (int) request.getAttribute("page");
 int totalCnt = (int) request.getAttribute("totalCnt");
 int totalPage = (int) request.getAttribute("totalPage");
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,6 +27,7 @@ table>thead>tr>th, table>tbody>tr>td {
 
 
 	<a href="../home/main">메인으로 이동</a>
+	<a href="write">글쓰기</a>
 
 	<div>
 		총 게시글 갯수 :
@@ -84,7 +84,7 @@ table>thead>tr>th, table>tbody>tr>td {
 		<%
 		for (int i = 1; i <= totalPage; i++) {
 		%>
-		<a class="<%=cPage == i ? "cPage" : ""%>" href="list?page=<%=i%>"><%=i%></a>
+		<a class="<%=cPage == i ? "cPage" : "" %>" href="list?page=<%=i%>"><%=i%></a>
 		<%
 		}
 		%>
@@ -93,4 +93,3 @@ table>thead>tr>th, table>tbody>tr>td {
 
 
 </body>
-</html>
