@@ -66,15 +66,14 @@ public class MemberDoLoginServlet extends HttpServlet {
 						.format("<script>alert('비밀번호 불일치'); location.replace('../member/login');</script>", loginId));
 				return;
 			}
-			
+
 			HttpSession session = request.getSession();
 			session.setAttribute("loginedMember", memberRow);
 			session.setAttribute("loginedMemberId", memberRow.get("id"));
 			session.setAttribute("loginedMemberLoginId", memberRow.get("loginId"));
-			session.setAttribute("loginedMemberName", memberRow.get("name"));
-			
+
 			response.getWriter().append(String.format(
-					"<script>alert('%s님 로그인됨'); location.replace('../home/main');</script>", memberRow.get("name")));
+					"<script>alert('%s님 로그인됨'); location.replace('../s/home/main');</script>", memberRow.get("name")));
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);
