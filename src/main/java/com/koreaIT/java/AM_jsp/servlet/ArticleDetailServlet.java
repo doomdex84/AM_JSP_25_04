@@ -23,7 +23,7 @@ public class ArticleDetailServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		
+
 		HttpSession session = request.getSession();
 
 		if (session.getAttribute("loginedMemberId") == null) {
@@ -31,7 +31,7 @@ public class ArticleDetailServlet extends HttpServlet {
 					.append(String.format("<script>alert('로그인 하고와'); location.replace('../member/login');</script>"));
 			return;
 		}
-
+		
 		// DB 연결
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -52,22 +52,8 @@ public class ArticleDetailServlet extends HttpServlet {
 
 
 			int id = Integer.parseInt(request.getParameter("id"));
-			
-			SecSql sql = SecSql.from("SELECT *");
-			sql.append("FROM article");
-			sql.append("WHERE id = ?", id);
 
-			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
-
-			int loginedMemberId = (int) session.getAttribute("loginedMemberId");
-
-			if (loginedMemberId != (int) articleRow.get("memberId")) {
-				response.getWriter().append(
-						String.format("<script>alert('%d번 글에 대한 권한 x'); location.replace('list');</script>", id));
-				return;
-			}
-
-			sql = SecSql.from("SELECT A.*, M.name");
+			SecSql sql = SecSql.from("SELECT A.*, M.name");
 			sql.append("FROM article AS A");
 			sql.append("INNER JOIN `member` AS M");
 			sql.append("ON A.memberId = M.id");
