@@ -1,8 +1,12 @@
 package com.koreaIT.java.AM_jsp.servlet;
+
+
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 import com.koreaIT.java.AM_jsp.util.DBUtil;
 import com.koreaIT.java.AM_jsp.util.SecSql;
@@ -15,12 +19,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/article/doDelete")
-public class ArticleDeleteServlet extends HttpServlet {
+public class ArticleDoDeleteServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		
+
 		HttpSession session = request.getSession();
 
 		if (session.getAttribute("loginedMemberId") == null) {
@@ -44,21 +48,32 @@ public class ArticleDeleteServlet extends HttpServlet {
 
 		Connection conn = null;
 
-		
-		
 		try {
 			conn = DriverManager.getConnection(url, user, password);
-			response.getWriter().append("연결 성공!");
+
 
 			int id = Integer.parseInt(request.getParameter("id"));
 
-			SecSql sql = SecSql.from("DELETE");
+			SecSql sql = SecSql.from("SELECT *");
+			sql.append("FROM article");
+			sql.append("WHERE id = ?", id);
+
+			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
+
+			int loginedMemberId = (int) session.getAttribute("loginedMemberId");
+
+			if (loginedMemberId != (int) articleRow.get("memberId")) {
+				response.getWriter().append(
+						String.format("<script>alert('%d번 글에 대한 권한 x'); location.replace('list');</script>", id));
+				return;
+			}
+
+			sql = SecSql.from("DELETE");
 			sql.append("FROM article");
 			sql.append("WHERE id = ?;", id);
 
 			DBUtil.delete(conn, sql);
 
-			
 			response.getWriter()
 					.append(String.format("<script>alert('%d번 글이 삭제됨'); location.replace('list');</script>", id));
 

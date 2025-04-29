@@ -52,8 +52,22 @@ public class ArticleDetailServlet extends HttpServlet {
 
 
 			int id = Integer.parseInt(request.getParameter("id"));
+			
+			SecSql sql = SecSql.from("SELECT *");
+			sql.append("FROM article");
+			sql.append("WHERE id = ?", id);
 
-			SecSql sql = SecSql.from("SELECT A.*, M.name");
+			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
+
+			int loginedMemberId = (int) session.getAttribute("loginedMemberId");
+
+			if (loginedMemberId != (int) articleRow.get("memberId")) {
+				response.getWriter().append(
+						String.format("<script>alert('%d번 글에 대한 권한 x'); location.replace('list');</script>", id));
+				return;
+			}
+
+			sql = SecSql.from("SELECT A.*, M.name");
 			sql.append("FROM article AS A");
 			sql.append("INNER JOIN `member` AS M");
 			sql.append("ON A.memberId = M.id");
