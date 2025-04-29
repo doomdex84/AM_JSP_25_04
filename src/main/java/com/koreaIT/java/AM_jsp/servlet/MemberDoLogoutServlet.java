@@ -44,7 +44,8 @@ public class MemberDoLogoutServlet extends HttpServlet {
 			session.removeAttribute("loginedMember");
 			session.removeAttribute("loginedMemberId");
 			session.removeAttribute("loginedMemberLoginId");
-
+			session.removeAttribute("loginedMemberName");
+			
 			response.getWriter().append(String.format(
 					"<script>alert('로그아웃 됨'); location.replace('../home/main');</script>"));
 
