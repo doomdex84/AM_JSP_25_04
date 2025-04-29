@@ -35,6 +35,8 @@ public class ArticleDeleteServlet extends HttpServlet {
 
 		Connection conn = null;
 
+		
+		
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 			response.getWriter().append("연결 성공!");
@@ -47,6 +49,7 @@ public class ArticleDeleteServlet extends HttpServlet {
 
 			DBUtil.delete(conn, sql);
 
+			
 			response.getWriter()
 					.append(String.format("<script>alert('%d번 글이 삭제됨'); location.replace('list');</script>", id));
 

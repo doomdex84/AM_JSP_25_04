@@ -1,22 +1,21 @@
 package com.koreaIT.java.AM_jsp.servlet;
+
+
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-
-import com.koreaIT.java.AM_jsp.util.DBUtil;
-import com.koreaIT.java.AM_jsp.util.SecSql;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/article/list")
-public class ArticleListServlet extends HttpServlet {
+@WebServlet("/member/doLogout")
+public class MemberDoLogoutServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -40,36 +39,14 @@ public class ArticleListServlet extends HttpServlet {
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 
-
-			int page = 1;
-
-			if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
-				page = Integer.parseInt(request.getParameter("page"));
-			}
-
-			int itemsInAPage = 10;
-			int limitFrom = (page - 1) * itemsInAPage;
-
-			SecSql sql = SecSql.from("SELECT COUNT(*)");
-			sql.append("FROM article;");
-
-			int totalCnt = DBUtil.selectRowIntValue(conn, sql);
-			int totalPage = (int) Math.ceil(totalCnt / (double)itemsInAPage);
-
-			sql = SecSql.from("SELECT *");
-			sql.append("FROM article AS a");
-//			sql.append("INNER JOIN 'member'AS m ON a.regDate = m.regDate " );
-			sql.append("ORDER BY id DESC");
-			sql.append("LIMIT ?, ?;", limitFrom, itemsInAPage);
-
-			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 			
-			request.setAttribute("page", page);
-			request.setAttribute("articleRows", articleRows);
-			request.setAttribute("totalCnt", totalCnt);
-			request.setAttribute("totalPage", totalPage);
+			HttpSession session = request.getSession();
+			session.removeAttribute("loginedMember");
+			session.removeAttribute("loginedMemberId");
+			session.removeAttribute("loginedMemberLoginId");
 
-			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
+			response.getWriter().append(String.format(
+					"<script>alert('로그아웃 됨'); location.replace('../home/main');</script>"));
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);
@@ -83,6 +60,11 @@ public class ArticleListServlet extends HttpServlet {
 			}
 		}
 
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }

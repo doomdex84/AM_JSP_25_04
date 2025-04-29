@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 import com.koreaIT.java.AM_jsp.util.DBUtil;
 import com.koreaIT.java.AM_jsp.util.SecSql;
@@ -16,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/member/doLogin")
 public class MemberDoLoginServlet extends HttpServlet {
@@ -25,7 +27,6 @@ public class MemberDoLoginServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		// DB 연결
-		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -45,28 +46,34 @@ public class MemberDoLoginServlet extends HttpServlet {
 
 			String loginId = request.getParameter("loginId");
 			String loginPw = request.getParameter("loginPw");
-			
 
-			SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt FROM `member`");
+			SecSql sql = SecSql.from("SELECT *");
+			sql.append("FROM `member`");
 			sql.append("WHERE loginId = ?;", loginId);
 
-			boolean isJoinableLoginId = DBUtil.selectRowIntValue(conn, sql) == 0;
+			Map<String, Object> memberRow = DBUtil.selectRow(conn, sql);
 
-			if (isJoinableLoginId == false) {
-				response.getWriter().append(String
-						.format("<script>alert('%s는 이미 로그인중 '); location.replace('../member/login');</script>", loginId));
+			System.out.println(memberRow);
+
+			if (memberRow.isEmpty()) {
+				response.getWriter().append(String.format(
+						"<script>alert('%s는 없는 아이디야'); location.replace('../member/login');</script>", loginId));
 				return;
 			}
 
-			sql = SecSql.from("SELECT *");
-			sql.append("FROM `member`");
-			sql.append("ORDER BY id DESC;");
+			if (memberRow.get("loginPw").equals(loginPw) == false) {
+				response.getWriter().append(String
+						.format("<script>alert('비밀번호 불일치'); location.replace('../member/login');</script>", loginId));
+				return;
+			}
 			
-			int id = DBUtil.selectRowIntValue(conn, sql);
+			HttpSession session = request.getSession();
+			session.setAttribute("loginedMember", memberRow);
+			session.setAttribute("loginedMemberId", memberRow.get("id"));
+			session.setAttribute("loginedMemberLoginId", memberRow.get("loginId"));
 
-			
-			response.getWriter().append(
-					String.format("<script>alert('%d번 로그인'); location.replace('../article/list');</script>", id));
+			response.getWriter().append(String.format(
+					"<script>alert('%s님 로그인됨'); location.replace('../home/main');</script>", memberRow.get("name")));
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);

@@ -28,8 +28,6 @@ table>thead>tr>th, table>tbody>tr>td {
 
 	<a href="../home/main">메인으로 이동</a>
 	<a href="write">글쓰기</a>
-	<a logout="if (logout != ){session.setAttribute("id", null);
-	session.setMaxInactiveInterval(0);}" href="#">로그아웃</a>
 	
 	
 	<div>
@@ -46,6 +44,7 @@ table>thead>tr>th, table>tbody>tr>td {
 				<th>날짜</th>
 				<th>제목</th>
 				<th>내용</th>
+				<th>작성자</th>
 				<th>수정</th>
 				<th>삭제</th>
 			</tr>
@@ -59,10 +58,12 @@ table>thead>tr>th, table>tbody>tr>td {
 				<td><%=articleRow.get("regDate")%></td>
 				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></a></td>
 				<td><%=articleRow.get("body")%></td>
+				<td><%=articleRow.get("login")%></td>
 				<td><a href="modify?id=<%=articleRow.get("id")%>">수정</a></td>
+				
 				<td><a
 						onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) { return false; }"
-						href="doDelete?id=<%=articleRow.get("id")%>">del</a></td>
+						href="doDelete?id=<%=articleRow.get("id")%>">삭제</a></td>
 			</tr>
 			<%
 			}
