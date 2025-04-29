@@ -14,6 +14,7 @@
 	<ul>
 		<li><a href="../article/list">리스트로 이동</a></li>
 		<li><a href="../article/write">글쓰기</a></li>
+		<li><a href="../member/join">회원가입</a></li>
 	</ul>
 
 </body>

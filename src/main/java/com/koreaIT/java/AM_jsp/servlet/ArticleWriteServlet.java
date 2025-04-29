@@ -1,6 +1,5 @@
 package com.koreaIT.java.AM_jsp.servlet;
 
-
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
@@ -18,4 +17,5 @@ public class ArticleWriteServlet extends HttpServlet {
 		request.getRequestDispatcher("/jsp/article/write.jsp").forward(request, response);
 	}
 
+	
 }

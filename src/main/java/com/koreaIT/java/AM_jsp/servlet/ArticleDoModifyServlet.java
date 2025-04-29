@@ -1,7 +1,5 @@
 package com.koreaIT.java.AM_jsp.servlet;
 
-
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,8 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/doWrite")
-public class ArticleDoWriteServlet extends HttpServlet {
+@WebServlet("/article/doModify")
+public class ArticleDoModifyServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -41,18 +39,21 @@ public class ArticleDoWriteServlet extends HttpServlet {
 		try {
 			conn = DriverManager.getConnection(url, user, password);
 
+			int id = Integer.parseInt(request.getParameter("id"));
+
 			String title = request.getParameter("title");
 			String body = request.getParameter("body");
 
-			SecSql sql = SecSql.from("INSERT INTO article");
-			sql.append("SET regDate = NOW(),");
+			SecSql sql = SecSql.from("UPDATE article");
+			sql.append("SET");
 			sql.append("title = ?,", title);
-			sql.append("`body` = ?;", body);
+			sql.append("`body` = ?", body);
+			sql.append("WHERE id = ?;", id);
 
-			int id = DBUtil.insert(conn, sql);
+			DBUtil.update(conn, sql);
 
-			response.getWriter()
-					.append(String.format("<script>alert('%d번 글이 작성됨'); location.replace('list');</script>", id));
+			response.getWriter().append(
+					String.format("<script>alert('%d번 글이 수정됨'); location.replace('detail?id=%d');</script>", id, id));
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);
@@ -67,8 +68,9 @@ public class ArticleDoWriteServlet extends HttpServlet {
 		}
 
 	}
-	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

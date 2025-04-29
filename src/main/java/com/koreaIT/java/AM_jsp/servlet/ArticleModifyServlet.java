@@ -1,9 +1,12 @@
 package com.koreaIT.java.AM_jsp.servlet;
 
+
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Map;
 
 import com.koreaIT.java.AM_jsp.util.DBUtil;
 import com.koreaIT.java.AM_jsp.util.SecSql;
@@ -14,11 +17,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/doModify")
+@WebServlet("/article/modify")
 public class ArticleModifyServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		response.setContentType("text/html;charset=UTF-8");
 
 		// DB 연결
@@ -38,27 +42,22 @@ public class ArticleModifyServlet extends HttpServlet {
 
 		try {
 			conn = DriverManager.getConnection(url, user, password);
-			response.getWriter().append("연결 성공!");
 
-			
-			String title = request.getParameter("title");
-			String body = request.getParameter("body");
-			
 			int id = Integer.parseInt(request.getParameter("id"));
 
-			SecSql sql = SecSql.from("UPDATE article");
-			if (title.length() > 0) {
-	            sql.append(",title = ?", title);
-	        }
-	        if (body.length() > 0) {
-	            sql.append(",`body` = ?", body);
-	        }
-	        sql.append("WHERE id = ?", id);
+			SecSql sql = SecSql.from("SELECT *");
+			sql.append("FROM article");
+			sql.append("WHERE id = ?;", id);
 
-			DBUtil.delete(conn, sql);
+			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 
-			response.getWriter()
-					.append(String.format("<script>alert('%d번 글이 수정됨'); location.replace('list');</script>", id));
+			request.setAttribute("articleRow", articleRow);
+			
+			if(articleRow == null) {
+				// todo
+			}
+
+			request.getRequestDispatcher("/jsp/article/modify.jsp").forward(request, response);
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);
@@ -73,4 +72,5 @@ public class ArticleModifyServlet extends HttpServlet {
 		}
 
 	}
+
 }
