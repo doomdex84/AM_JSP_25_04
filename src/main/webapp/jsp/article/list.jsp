@@ -29,30 +29,7 @@ table>thead>tr>th, table>tbody>tr>td {
 	<h2>게시글 목록</h2>
 
 
-	<div><%=loginedMemberId%>번 회원 로그인 중
-	</div>
-	<div><%=loginedMember%></div>
-
-	<%
-	if (isLogined) {
-	%>
-	<div>
-		<a href="../member/doLogout">로그아웃</a>
-		<a href="write">글쓰기</a>
-	</div>
-	<%
-	}
-	%>
-
-	<%
-	if (!isLogined) {
-	%>
-	<div>
-		<a href="../member/login">로그인</a>
-	</div>
-	<%
-	}
-	%>
+	<%@ include file="../part/top_bar.jspf"%>
 
 	<a href="../home/main">메인으로 이동</a>
 

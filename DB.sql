@@ -16,7 +16,7 @@ CREATE TABLE `member` (
                          regDate DATETIME NOT NULL,
                          loginId CHAR(100) NOT NULL,
                          loginPw CHAR(200) NOT NULL,
-                         `name` CHAR(100) NOT NULL
+                         `name` char(100) not null
 );
 
 # 게시글 테스트 데이터 생성
@@ -54,6 +54,16 @@ loginId = 'test3',
 loginPw = 'test3',
 `name` = '회원3';
 
+alter table article add column memberId int(10) unsigned not null after regDate;
+
+update article
+set memberId = 1
+where id in (1,2);
+
+update article
+set memberId = 2
+where id = 3;
+
 SELECT *
 FROM article
 ORDER BY id DESC;
@@ -64,11 +74,17 @@ FROM `member`;
 
 ######################################################################
 
+select * from `member`
+where loginId = 'test4'
+
+select ceiling(RAND() * 3);
+
 # 게시글 데이터 대량 생성
 INSERT INTO article
 SET regDate = NOW(),
-title = CONCAT('제목',SUBSTRING(RAND() * 1000 FROM 1 FOR 2)),
-`body` = CONCAT('내용',SUBSTRING(RAND() * 1000 FROM 1 FOR 2));
+memberId = ceiling(RAND() * 3),
+title = CONCAT('제목__', rand()),
+`body` = CONCAT('내용__',rand());
 
 # 회원 데이터 대량 생성
 INSERT INTO `member`

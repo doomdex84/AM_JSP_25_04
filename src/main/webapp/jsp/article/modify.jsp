@@ -9,6 +9,8 @@
 Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("articleRow");
 %>
 
+
+
 <!DOCTYPE html>
 <html>
 <head>
