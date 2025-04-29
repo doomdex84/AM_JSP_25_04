@@ -17,8 +17,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/member/doJoin")
-public class MemberDoJoinServlet extends HttpServlet {
+@WebServlet("/member/doLogin")
+public class MemberDoLoginServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -45,29 +45,28 @@ public class MemberDoJoinServlet extends HttpServlet {
 
 			String loginId = request.getParameter("loginId");
 			String loginPw = request.getParameter("loginPw");
-			String name = request.getParameter("name");
+			
 
 			SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt FROM `member`");
-			sql.append("WHERE loginId = ?;", loginId); // 중복확인을 위해서 필요
+			sql.append("WHERE loginId = ?;", loginId);
 
 			boolean isJoinableLoginId = DBUtil.selectRowIntValue(conn, sql) == 0;
 
 			if (isJoinableLoginId == false) {
 				response.getWriter().append(String
-						.format("<script>alert('%s는 이미 사용중'); location.replace('../member/join');</script>", loginId));
+						.format("<script>alert('%s는 이미 로그인중 '); location.replace('../member/login');</script>", loginId));
 				return;
 			}
 
-			sql = SecSql.from("INSERT INTO `member`");
-			sql.append("SET regDate = NOW(),");
-			sql.append("loginId = ?,", loginId);
-			sql.append("loginPw = ?,", loginPw);
-			sql.append("`name` = ?;", name);
+			sql = SecSql.from("SELECT *");
+			sql.append("FROM `member`");
+			sql.append("ORDER BY id DESC;");
+			
+			int id = DBUtil.selectRowIntValue(conn, sql);
 
-			int id = DBUtil.insert(conn, sql);
-
+			
 			response.getWriter().append(
-					String.format("<script>alert('%d번 회원이 가입됨'); location.replace('../article/list');</script>", id));
+					String.format("<script>alert('%d번 로그인'); location.replace('../article/list');</script>", id));
 
 		} catch (SQLException e) {
 			System.out.println("에러 1 : " + e);

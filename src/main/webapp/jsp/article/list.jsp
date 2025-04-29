@@ -28,11 +28,15 @@ table>thead>tr>th, table>tbody>tr>td {
 
 	<a href="../home/main">메인으로 이동</a>
 	<a href="write">글쓰기</a>
-
+	<a logout="if (logout != ){session.setAttribute("id", null);
+	session.setMaxInactiveInterval(0);}" href="#">로그아웃</a>
+	
+	
 	<div>
 		총 게시글 갯수 :
 		<%=totalCnt%>
 	</div>
+	
 
 	<table style="border-collapse: collapse; border-color: green;"
 		border="1px">
