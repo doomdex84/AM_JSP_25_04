@@ -1,10 +1,11 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
+<%@page import="com.koreaIT.java.AM_jsp.dto.Article" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%
-List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
+List<Article> articles = (List<Article>) request.getAttribute("articles");
 
 int cPage = (int) request.getAttribute("page");
 int totalCnt = (int) request.getAttribute("totalCnt");
@@ -14,6 +15,7 @@ boolean isLogined = (boolean) request.getAttribute("isLogined");
 int loginedMemberId = (int) request.getAttribute("loginedMemberId");
 Map<String, Object> loginedMember = (Map<String, Object>) request.getAttribute("loginedMember");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,18 +56,17 @@ table>thead>tr>th, table>tbody>tr>td {
 		</thead>
 		<tbody>
 			<%
-			for (Map<String, Object> articleRow : articleRows) {
+			for(Article article : articles) {
 			%>
 			<tr style="text-align: center;">
-				<td><%=articleRow.get("id")%>번</td>
-				<td><%=articleRow.get("regDate")%></td>
-				<td><%=articleRow.get("name")%></td>
-				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></a></td>
-				<td><%=articleRow.get("body")%></td>
-				<td><a href="modify?id=<%=articleRow.get("id")%>">수정</a></td>
-				<td><a
-						onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) { return false; }"
-						href="doDelete?id=<%=articleRow.get("id")%>">del</a></td>
+				<td><%=article.getId()%>번</td>
+				<td><%=article.getRegDate()%></td>
+				<td><%=article.getName()%></td>
+				<td><a href="detail?id=<%=article.getId()%>"><%=article.getTitle()%></a></td>
+				<td><%=article.getBody()%></td>
+				<td><a href="modify?id=<%=article.getId()%>">수정</a></td>
+				<td><a onclick="if ( confirm('정말 삭제하시겠습니까?') == false ) { return false; }"
+						href="doDelete?id=<%=article.getId()%>">del</a></td>
 			</tr>
 			<%
 			}
@@ -74,6 +75,7 @@ table>thead>tr>th, table>tbody>tr>td {
 	</table>
 
 	<style type="text/css">
+	
 .page {
 	font-size: 1.4rem;
 }
@@ -102,3 +104,4 @@ table>thead>tr>th, table>tbody>tr>td {
 
 
 </body>
+</html>

@@ -1,9 +1,17 @@
-
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
+<%@page import="com.koreaIT.java.AM_jsp.dto.Article" %>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
+
+<%
+boolean isLogined = (boolean) request.getAttribute("isLogined");
+int loginedMemberId = (int) request.getAttribute("loginedMemberId");
+Map<String, Object> loginedMember = (Map<String, Object>) request.getAttribute("loginedMember");
+%>
+
 
 <!DOCTYPE html>
 <html>
@@ -87,6 +95,9 @@
 		</div>
 		<button type="submit">가입</button>
 	</form>
+
+
+
 
 
 </body>

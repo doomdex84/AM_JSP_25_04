@@ -1,8 +1,5 @@
 package com.koreaIT.java.AM_jsp.servlet;
 
-
-
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,7 +22,6 @@ public class MemberDoJoinServlet extends HttpServlet {
 		response.setContentType("text/html;charset=UTF-8");
 
 		// DB 연결
-		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e) {
@@ -48,7 +44,7 @@ public class MemberDoJoinServlet extends HttpServlet {
 			String name = request.getParameter("name");
 
 			SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt FROM `member`");
-			sql.append("WHERE loginId = ?;", loginId); // 중복확인을 위해서 필요
+			sql.append("WHERE loginId = ?;", loginId);
 
 			boolean isJoinableLoginId = DBUtil.selectRowIntValue(conn, sql) == 0;
 

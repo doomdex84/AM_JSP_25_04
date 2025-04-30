@@ -1,4 +1,3 @@
-
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
 
@@ -8,8 +7,6 @@
 <%
 Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("articleRow");
 %>
-
-
 
 <!DOCTYPE html>
 <html>

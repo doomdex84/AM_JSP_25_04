@@ -1,7 +1,5 @@
 package com.koreaIT.java.AM_jsp.controller;
 
-
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Map;
@@ -12,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 public class HomeController {
-
 
 	private HttpServletRequest request;
 	private HttpServletResponse response;

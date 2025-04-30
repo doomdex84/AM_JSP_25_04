@@ -1,6 +1,5 @@
 package com.koreaIT.java.AM_jsp.servlet;
 
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,6 +7,8 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.koreaIT.java.AM_jsp.controller.ArticleController;
+import com.koreaIT.java.AM_jsp.controller.HomeController;
+import com.koreaIT.java.AM_jsp.controller.MemberController;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -62,9 +63,6 @@ public class DispatcherServlet extends HttpServlet {
 
 			System.out.println(requestUri);
 
-
-
-
 			String[] reqUriBits = requestUri.split("/");
 			// /~~~/s/article/list
 
@@ -77,11 +75,44 @@ public class DispatcherServlet extends HttpServlet {
 			String controllerName = reqUriBits[3];
 			String actionMethodName = reqUriBits[4];
 
-			if (controllerName.equals("article")) {
-				ArticleController articleController = new ArticleController(request, response, conn);
+			if (controllerName.equals("home")) {
+				HomeController homeController = new HomeController(request, response);
 
-				if (actionMethodName.equals("list")) {
+				homeController.showMain();
+			} else if (controllerName.equals("article")) {
+				
+				ArticleController articleController = new ArticleController(request, response, conn);
+				
+				MemberController memberController = new MemberController(request, response, conn);
+
+				switch (actionMethodName) {
+				case "list":
 					articleController.showList();
+					break;
+				case "detail":
+					articleController.showDetail();
+					break;
+				case "doDelete":
+					articleController.doDelete();
+					break;
+				case "modify":
+					articleController.showModify();
+					break;
+				case "doModify":
+					articleController.doModify();
+					break;
+				case "write":
+					articleController.showWrite();
+					break;
+				case "doWrite":
+					articleController.doWrite();
+					break;
+				case "doJoin":
+					memberController.doJoin();
+					break;
+				case "doLogin":
+					memberController.doLogin();
+					break;
 				}
 			}
 

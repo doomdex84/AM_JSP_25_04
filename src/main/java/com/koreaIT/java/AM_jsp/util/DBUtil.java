@@ -1,6 +1,5 @@
 package com.koreaIT.java.AM_jsp.util;
 
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

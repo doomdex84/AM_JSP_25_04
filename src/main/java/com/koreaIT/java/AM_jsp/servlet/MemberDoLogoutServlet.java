@@ -1,7 +1,5 @@
 package com.koreaIT.java.AM_jsp.servlet;
 
-
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -44,8 +42,7 @@ public class MemberDoLogoutServlet extends HttpServlet {
 			session.removeAttribute("loginedMember");
 			session.removeAttribute("loginedMemberId");
 			session.removeAttribute("loginedMemberLoginId");
-			session.removeAttribute("loginedMemberName");
-			
+
 			response.getWriter().append(String.format(
 					"<script>alert('로그아웃 됨'); location.replace('../home/main');</script>"));
 

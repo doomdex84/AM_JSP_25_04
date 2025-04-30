@@ -1,12 +1,11 @@
 package com.koreaIT.java.AM_jsp.controller;
 
-
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
+import com.koreaIT.java.AM_jsp.dto.Article;
 import com.koreaIT.java.AM_jsp.service.ArticleService;
 import com.koreaIT.java.AM_jsp.util.DBUtil;
 import com.koreaIT.java.AM_jsp.util.SecSql;
@@ -22,6 +21,8 @@ public class ArticleController {
 	private Connection conn;
 
 	private ArticleService articleService;
+	private SecSql sql;
+
 
 	public ArticleController(HttpServletRequest request, HttpServletResponse response, Connection conn) {
 		this.conn = conn;
@@ -51,9 +52,6 @@ public class ArticleController {
 		int limitFrom = (page - 1) * itemsInAPage;
 
 		int totalCnt = articleService.getTotalCnt();
-
-
-
 		int totalPage = (int) Math.ceil(totalCnt / (double) itemsInAPage);
 
 		List<Map<String, Object>> articleRows = articleService.getForPrintArticles(limitFrom, itemsInAPage);
@@ -69,11 +67,7 @@ public class ArticleController {
 	public void showDetail() throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 
-		SecSql sql = SecSql.from("SELECT A.*, M.name");
-		sql.append("FROM article AS A");
-		sql.append("INNER JOIN `member` AS M");
-		sql.append("ON A.memberId = M.id");
-		sql.append("WHERE A.id = ?;", id);
+		Article article = articleService.getArticleById(id);
 
 		Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 
@@ -201,5 +195,6 @@ public class ArticleController {
 		}
 		request.getRequestDispatcher("/jsp/article/write.jsp").forward(request, response);
 	}
+
 
 }

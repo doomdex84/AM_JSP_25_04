@@ -1,8 +1,5 @@
 package com.koreaIT.java.AM_jsp.servlet;
 
-
-
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -66,7 +63,7 @@ public class MemberDoLoginServlet extends HttpServlet {
 						.format("<script>alert('비밀번호 불일치'); location.replace('../member/login');</script>", loginId));
 				return;
 			}
-
+			
 			HttpSession session = request.getSession();
 			session.setAttribute("loginedMember", memberRow);
 			session.setAttribute("loginedMemberId", memberRow.get("id"));
