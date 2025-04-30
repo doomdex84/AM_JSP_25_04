@@ -20,6 +20,9 @@ Map<String, Object> loginedMember = (Map<String, Object>) request.getAttribute("
 	<h1>메인 페이지</h1>
 	
 	<%@ include file="../part/top_bar.jspf" %>
+	
+
+
 	<ul>
 		<li><a href="../article/list">리스트로 이동</a></li>
 		<li><a href="../article/write">글쓰기</a></li>

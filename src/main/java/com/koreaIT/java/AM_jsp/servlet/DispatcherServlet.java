@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.koreaIT.java.AM_jsp.controller.ArticleController;
-import com.koreaIT.java.AM_jsp.controller.HomeController;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -63,6 +62,9 @@ public class DispatcherServlet extends HttpServlet {
 
 			System.out.println(requestUri);
 
+
+
+
 			String[] reqUriBits = requestUri.split("/");
 			// /~~~/s/article/list
 
@@ -75,35 +77,11 @@ public class DispatcherServlet extends HttpServlet {
 			String controllerName = reqUriBits[3];
 			String actionMethodName = reqUriBits[4];
 
-			if (controllerName.equals("home")) {
-				HomeController homeController = new HomeController(request, response);
-
-				homeController.showMain();
-			} else if (controllerName.equals("article")) {
+			if (controllerName.equals("article")) {
 				ArticleController articleController = new ArticleController(request, response, conn);
 
-				switch (actionMethodName) {
-				case "list":
+				if (actionMethodName.equals("list")) {
 					articleController.showList();
-					break;
-				case "detail":
-					articleController.showDetail();
-					break;
-				case "doDelete":
-					articleController.doDelete();
-					break;
-				case "modify":
-					articleController.showModify();
-					break;
-				case "doModify":
-					articleController.doModify();
-					break;
-				case "write":
-					articleController.showWrite();
-					break;
-				case "doWrite":
-					articleController.doWrite();
-					break;
 				}
 			}
 
